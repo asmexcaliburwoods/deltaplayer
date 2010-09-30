@@ -20,7 +20,7 @@
 <project name="deltaplayer" basedir=".">
 
 	<!-- NOTE: To build the launch script for Linux, an installation of launch4l's fork by eph is required.
-			   Take https://deltaplayer.svn.sourceforge.net/svnroot/deltaplayer/modules/launch4l/trunk , build it, and uncomress to some dir.
+			   Take http://launch4l-delta.googlecode.com/files/launch4l-delta-bin-2010.02delta.zip , and uncomress to some dir.
 	           Set the property "launch4l.dir" to the name of this dir. -->
 	
 	<!-- NOTE: To build the launch executable for win32, an installation of launch4j (min. version 3, for example 3.0.1) 
