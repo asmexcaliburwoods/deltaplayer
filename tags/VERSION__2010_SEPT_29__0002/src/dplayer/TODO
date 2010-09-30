@@ -1,0 +1,47 @@
+This is an unordered and not weighted list of functions I want to add in the near future.
+
+If you wish to see another feature on this list, don't hesitate to send a mail to dplayer@wcondev.de.
+
+track table
+- allow selection of multiple tracks, e.g. for skipping
+
+folder tree
+- allow selection of multiple folders, e.g. for flat display
+
+misc
+- album covers.
+  also, i saw that entagger-tag-editor code contains fetcher for Amazon
+  album covers. We could grab that code eventually. Caching it in the
+  user-specified dir (for joxy, it would always be
+  ./!META/cover.jpg/gif/png, for other users, it would be ./cover.*)
+- check for full featured keyboard control
+- use special keys
+- allow only one instance to run
+  - second instance could communicate file arguments to first instance
+- favorites
+  - popup menu item in directory tree to define (incl. flat if directory has subs)
+  - popup menu item in favorites tree to remove favorite
+  - favorites tree replaces directory tree
+  - tool items to switch between directory and favorites tree
+- specials (only available if song cache is enabled
+  - tree with special "directories":
+  	- most played, least played
+  	- frequent played, long forgotten (last played long ago)
+  	- recently added, timeline (ordered in years and months of adding)
+  	- grouped by genre
+  	- grouped by year (of album)
+  - tool items to switch between directory, favorites and specials tree
+  
+settings dialog
+- search external applications (player, mixer, ...)
+- choose columns of track table
+- misc behaviour: show cover, hide while minimized, ...
+
+funky but not really necessary stuff
+- skins
+- OSD or tray icon baloons when track changes
+- nicer tray icon tool tip with more info; also for track window
+- stream from network sources
+- try to get track infos from CDDB
+- file browser functions: copy, paste, delete, move, create directory, ...
+- playlist stuff
