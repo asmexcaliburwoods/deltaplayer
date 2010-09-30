@@ -1,0 +1,37 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>../deltaplayer.jar</jar>
+  <outfile>../deltaplayer.exe</outfile>
+  <icon>dplayer.ico</icon>
+  <errTitle>deltaplayer</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>https://sourceforge.net/projects/deltaplayer</supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <var>PATH=%PATH%;.;lib</var>
+  <jre>
+    <path>jre</path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <dontUsePrivateJres>false</dontUsePrivateJres>
+    <initialHeapSize>64</initialHeapSize>
+    <maxHeapSize>64</maxHeapSize>
+    <opt>-client</opt>
+  </jre>
+  <versionInfo>
+    <fileVersion>0.0.0.0</fileVersion>
+    <txtFileVersion>0.0</txtFileVersion>
+    <fileDescription>deltaplayer - a music player</fileDescription>
+    <copyright>Tobias Winterhalter, Evgenii Philippov</copyright>
+    <productVersion>0.0.0.0</productVersion>
+    <txtProductVersion>0.0</txtProductVersion>
+    <productName>deltaplayer - a music player</productName>
+    <companyName></companyName>
+    <internalName>deltaplayer</internalName>
+    <originalFilename>deltaplayer.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>

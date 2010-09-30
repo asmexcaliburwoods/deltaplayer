@@ -1,0 +1,105 @@
+ABOUT
+=====
+
+dplayer - a directory player, Copyright (C) Tobias Winterhalter, Germany
+
+dplayer is a simple music file player written in Java. Instead of using a
+sophisticated play list management or “my music” repository, it offers a simple
+file system browser to let you choose directories containing music files. This
+approach is very flexible and straight forward. No installation required and
+nothing is written to the file system (except a simple properties file).
+
+dplayer is strongly inspired by the 1by1 player of Martin Pesch. The only reason
+to write an alternative to his player is the platform portability of Java. In
+other words: I wanted something like 1by1 on Linux.
+
+dplayer is just acting as front-end to command line music file players.
+Currently it uses mplayer for music play-back. Theoretically, dplayer can be
+used on all platforms supported by mplayer like Linux and Windows (these two are
+tested). 
+
+For any contribution (question, error report, feature request, bug fix, ...),
+feel free to contact dplayer@wcondev.de.
+
+Homepage: http://dplayer.wcondev.de
+
+
+LICENSE
+=======
+
+dplayer may be used under the GNU General Public License, GPL. dplayer comes
+with ABSOLUTELY NO WARRANTY; for details see 'LICENSE'. This is free software,
+and you are welcome to redistribute it under certain conditions; see 'LICENSE'
+for details.
+
+
+FEATURES
+========
+- I18N: currently available in English, French and German language
+- supported music files: mp3, ogg, wav, … (theoretically all files that can be
+  played by mplayer)
+- display tag info if available (id3, …)
+- play, pause and position within track
+- skip tracks; this information is persistent between dplayer sessions
+- repeat one or all tracks
+- shuffle tracks
+- reduce application to icon within system tray including play-back control via
+  pop-up menu
+
+New since release 07.07
+
+- shipped with native executable (Win only)
+- show cover as background (if available)
+- if dplayer is called with directory or file as argument, start immediate
+  play-back
+
+New since release 08.03
+
+- new native installer (Win only)
+- new language: French
+- Settings dialog: almost all settings can be controlled by the new dialog
+- search path for covers: dplayer can search in several folders for album covers
+- only one dplayer instance allowed: if dpalyer is called with a music file as
+  argument while another dplayer is already running, the running dplayer will
+  switch to the specified file and the second dplayer will terminate immediately
+- multi-threaded: dpalyer will scan for music files in the background; this
+  makes the GUI more responsive to user input, especially when dealing with
+  larger music collections
+
+
+REQUIREMENTS
+============
+- Windows or Linux operating system with Java Runtime Environment
+- Java Runtime Environment >= 1.5.0
+- working mplayer installation (s. http://www.mplayerhq.hu/)
+  mplayer is available for various Linux and Windows operating systems
+- ca. 4MB hard disk space
+
+
+INSTALLATION
+============
+dplayer comes as a simple zip file containing all necessary libraries. When
+downloading the binary distribution, you may choose between zip files for Linux
+and Windows platforms. Create a new directory, e.g. c:\Program Files\dplayer
+and un-zip the dplayer distribution file into it. That's it!
+
+Since dplayer version 08.03 you may also download an installer for Windows. The
+installer will create the directory of your choice and optionally create
+shortcuts in your start menu and on your desktop.
+
+If you meet the requirements mentioned above and the java and mplayer
+executables can be found in your environment PATH, you should be able to use
+mplayer without further modifications. On Windows, simply start dpalyer.exe to
+give it a try! On Linux, set permissions to execute the dplayer launch script
+(chmod a+x dplayer) and start it with ./dplayer.
+
+If mplayer isn't in your search path open the Settings dialog and locate the
+mplayer executable in the programs tab.
+
+
+UNINSTALLATION
+==============
+For the time being no uninstaller is provided. Simply delete the directory under
+which you installed dplayer. dplayer does not change your system in any way
+(registry entries, …). If you chose to create shortcuts in your start menu or on
+your desktop simply delete them too.
