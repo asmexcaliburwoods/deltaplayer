@@ -19,18 +19,18 @@
 
 ; General
 
-!define PRODUCT_NAME "dplayer"
+!define PRODUCT_NAME "deltaplayer"
 !define PRODUCT_VERSION "${VERSION}"
-!define PRODUCT_PUBLISHER "tobias@wcondev.de"
-!define PRODUCT_WEB_SITE "http://dplayder.wcondev.de"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\dplayer.exe"
+!define PRODUCT_PUBLISHER "joxy@sourceforge.net"
+!define PRODUCT_WEB_SITE "http://code.google.com/p/deltaplayer/"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\deltaplayer.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\${PRODUCT_NAME}-${PRODUCT_VERSION}-setup.exe"
-InstallDir "$PROGRAMFILES\dplayer"
+OutFile "..\${PRODUCT_NAME}-${PRODUCT_VERSION}-win32-setup.exe"
+InstallDir "$PROGRAMFILES\deltaplayer"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -52,7 +52,7 @@ RequestExecutionLevel user
 ; Start menu page
 var ICONS_GROUP
 !define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "dplayer - directory player"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "deltaplayer"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_STARTMENU_REGVAL}"
@@ -60,7 +60,7 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\dplayer.exe"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\deltaplayer.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -75,22 +75,22 @@ var ICONS_GROUP
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "..\dplayer.exe"
-  File "..\dplayer.dll"
-  File "..\README"
-  File "..\..\src\dplayer\LICENSE"
+  File /oname=deltaplayer.exe "..\deltaplayer.exe"
+  File /oname=deltaplayer.dll "..\deltaplayer.dll"
+  File /oname=README "..\README"
+  File /oname=LICENSE "..\..\src\dplayer\LICENSE"
   SetOutPath "$INSTDIR\lib"
-  File "..\..\lib\ascrblr.jar"
-  File "..\..\lib\db4o.jar"
-  File "..\..\lib\entagged-audioformats.jar"
-  File "..\..\lib\log4j.jar"
-  File /oname=swt.jar "..\..\lib\swt-win.jar"
+  File /oname=ascrblr-classes-v1dplayer.zip "..\..\lib\ascrblr-classes-v1dplayer.zip"
+  File /oname=db4o.jar "..\..\lib\db4o.jar"
+  File /oname=entagged-audioformats-classes-v0.31dplayer1.zip "..\..\lib\entagged-audioformats-classes-v0.31dplayer1.zip"
+  File /oname=log4j.jar "..\..\lib\log4j.jar"
+  File /oname=swt.jar "..\..\lib\swt-win32.jar"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\dplayer.lnk" "$INSTDIR\dplayer.exe"
-  CreateShortCut "$DESKTOP\dplayer.lnk" "$INSTDIR\dplayer.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\deltaplayer.lnk" "$INSTDIR\deltaplayer.exe"
+  CreateShortCut "$DESKTOP\deltaplayer.lnk" "$INSTDIR\deltaplayer.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -104,10 +104,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\dplayer.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\deltaplayer.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\dplayer.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\deltaplayer.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -130,8 +130,8 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
-  Delete "$DESKTOP\dplayer.lnk"
-  Delete "$SMPROGRAMS\$ICONS_GROUP\dplayer.lnk"
+  Delete "$DESKTOP\deltaplayer.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\deltaplayer.lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
   RMDir /r "$INSTDIR"

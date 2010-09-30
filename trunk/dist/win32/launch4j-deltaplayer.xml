@@ -9,7 +9,7 @@
   <chdir>.</chdir>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>https://sourceforge.net/projects/deltaplayer</supportUrl>
+  <supportUrl>http://code.google.com/p/deltaplayer/</supportUrl>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <var>PATH=%PATH%;.;lib</var>
@@ -23,12 +23,12 @@
     <opt>-client</opt>
   </jre>
   <versionInfo>
-    <fileVersion>0.0.0.0</fileVersion>
-    <txtFileVersion>0.0</txtFileVersion>
+    <fileVersion>0.2.0.0</fileVersion>
+    <txtFileVersion>0.2</txtFileVersion>
     <fileDescription>deltaplayer - a music player</fileDescription>
     <copyright>Tobias Winterhalter, Evgenii Philippov</copyright>
-    <productVersion>0.0.0.0</productVersion>
-    <txtProductVersion>0.0</txtProductVersion>
+    <productVersion>0.2.0.0</productVersion>
+    <txtProductVersion>0.2</txtProductVersion>
     <productName>deltaplayer - a music player</productName>
     <companyName></companyName>
     <internalName>deltaplayer</internalName>
