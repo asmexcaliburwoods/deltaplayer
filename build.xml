@@ -50,6 +50,7 @@
 	<property name="mingw.home" value="C:/MinGW"/>
 	<property name="jdk.home" value="C:/java/jdk1.6.0u13"/>
 	<property name="launch4j.dir" value="f:/java/launch4j/"/>
+	<property name="nsis.home" value="f:/devel/NSIS_win32/"/>
 	
 	<property name="src.dir" value="src"/>
 	<property name="lib.dir" value="lib"/>
@@ -180,13 +181,13 @@
 	
 	<target name="WinExt"
 		description="Create WinExt library deltaplayer.dll (MinGW is required).">
-		<exec executable="${mingw.home}/bin/mingw32-make.exe" dir="${src.dir}/dplayer/ext/win32">
+		<exec executable="${mingw.home}/bin/mingw32-make.exe" dir="${src.dir}/dplayer/ext/win">
 			<env key="JAVA_HOME" value="${jdk.home}"/>
 			<env key="MINGW_HOME" value="${mingw.home}"/>
 			<env key="PATH" value="${mingw.home}/bin"/>
 		</exec>
 		<delete verbose="true" failonerror="false">
-			<fileset dir="${src.dir}/dplayer/ext/win32">
+			<fileset dir="${src.dir}/dplayer/ext/win">
 				<include name="*.o"/>
 			</fileset>
 		</delete>
@@ -217,7 +218,7 @@
 		<delete file="${lib.dir}/swt.jar"/>
 	</target>	
 	
-	<target name="installer-win32" depends="compile"
+	<target name="installer-win32" depends="compile, exe-win32, WinExt"
 		description="Create the Win32 installer distribution.">
 		<exec executable="${nsis.home}/makensis.exe">
 		    <arg value="/DNSISDIR='${nsis.home}'"/>

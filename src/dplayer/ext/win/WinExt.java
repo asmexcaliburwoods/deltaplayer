@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 public class WinExt {
 
     protected static final Logger logger = Logger.getLogger(WinExt.class);
-    private static WinExt sInstance;
+    private static WinExt sInstance = new WinExt();
 
     public WinExt() {
     }
@@ -43,19 +43,10 @@ public class WinExt {
         getWinExt().nativeSetHWND(mainWindow.handle);
     }
 
+    static{
+        System.loadLibrary("deltaplayer");
+    }
     public static WinExt getWinExt() throws ExtException {
-        if(sInstance == null)
-            try {
-                logger.debug(((Object) ((new StringBuilder("Trying to load ext library from this path: ")).append(System.getProperty("java.library.path")).toString())));
-                System.loadLibrary("dplayer");
-                sInstance = new WinExt();
-            }
-            catch(Throwable t) {
-                logger.error(((Object) (t)));
-                throw new ExtException(I18N.get("ERROR_WINEXT_FAILED", "Unable to load WinExt library {0}.", new String[] {
-                    "dplayer.dll"
-                }), t);
-            }
         return sInstance;
     }
 
