@@ -145,7 +145,7 @@
 	<target name="zip-linux" depends="exe-linux"
 		description="Create zip distribution for Linux.">
 		<copy file="${lib.dir}/swt-linux.jar" tofile="${lib.dir}/swt.jar"/>
-		<zip destfile="${dist.dir}/deltaplayer-linux-${app.version}.zip">
+		<zip destfile="${dist.dir}/deltaplayer-linux-bin-${app.version}.zip">
 			<fileset dir="${dist.dir}">
 				<include name="deltaplayer.sh"/>
 				<include name="README"/>
@@ -195,7 +195,7 @@
 	<target name="zip-win32" depends="exe-win32, WinExt"
 		description="Create zip distribution for win32.">
 		<copy file="${lib.dir}/swt-win32.jar" tofile="${lib.dir}/swt.jar"/>
-		<zip destfile="${dist.dir}/deltaplayer-win32-${app.version}.zip">
+		<zip destfile="${dist.dir}/deltaplayer-win32-bin-${app.version}.zip">
 			<fileset dir="${dist.dir}">
 				<include name="README"/>
 				<include name="deltaplayer.exe"/>
@@ -245,14 +245,14 @@
 		 to be specified with the property "test-dist-win32.dir". -->
 	<target name="test-dist-win32" description="Unpack zip distribution for win32 to a directory."
 			depends="zip-win32">
-		<unzip src="${dist.dir}/deltaplayer-win32-${app.version}.zip" dest="${test-dist-win32.dir}" overwrite="true"/>
+		<unzip src="${dist.dir}/deltaplayer-win32-bin-${app.version}.zip" dest="${test-dist-win32.dir}" overwrite="true"/>
 	</target>
 
 	<!-- This target can be used to create a test installation of deltaplayer. The destination directory has
 		 to be specified with the property "test-dist-linux.dir". -->
 	<target name="test-dist-linux"
 		description="Unpack zip distribution for Linux to a directory." depends="zip-linux">
-		<unzip src="${dist.dir}/deltaplayer-linux-${app.version}.zip" dest="${test-dist-linux.dir}" overwrite="true"/>
+		<unzip src="${dist.dir}/deltaplayer-linux-bin-${app.version}.zip" dest="${test-dist-linux.dir}" overwrite="true"/>
 		<!-- TODO chmod u+x ${test-dist-linux.dir}/deltaplayer.sh --> 
 	</target>
 </project>
