@@ -7,6 +7,7 @@ package dplayer.model;
 
 import dplayer.DPUtils;
 import dplayer.gui.ExceptionUtil;
+import dplayer.gui.MainArea;
 import dplayer.model.cache.CacheManager;
 import dplayer.model.cache.DirectoryManager;
 import dplayer.model.cache.SongManager;

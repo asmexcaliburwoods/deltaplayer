@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import dplayer.About;
 import dplayer.Settings;
+import dplayer.gui.MainArea;
 import dplayer.lastfm.LastFmController;
 import dplayer.media.MPlayer;
 import dplayer.media.MediaPlayer;
@@ -105,6 +106,7 @@ public class Player
     public void selectDirectory(Directory directory, boolean flat) {
         if(directory == null)
             throw new AssertionError();
+        MainArea.getInstance().setBaseFolder(new File(directory.getPath()));
         mSelectedDirectory = directory;
         mSelectedDirectory.setDefaultSelectFlat(flat);
         mSelectedDirectoryFlat = flat ? directory : null;

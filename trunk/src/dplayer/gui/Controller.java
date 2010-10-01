@@ -331,7 +331,7 @@ class Controller {
 
     void toggleDisplaySkipped() {
         Settings.setBoolean(Settings.DISPLAY_SKIPPED, !Settings.getBoolean(Settings.DISPLAY_SKIPPED));
-        MainArea.refreshTable();
+        MainArea.getInstance().refreshTable();
     }
 
     public void setApplicationExiting(boolean applicationExiting) {
