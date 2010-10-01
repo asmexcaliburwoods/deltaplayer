@@ -85,28 +85,7 @@ class MenuFactory {
         return menu;
     }
 
-    static Menu getLocationTreePopupMenu(Tree parent, final TreeItem item) {
-        Directory d = GuiUtils.getDirectory(item);
-        final boolean selectFlat = d.isDefaultSelectFlat();
-        Menu menu = new Menu(((Control) (parent)));
-        addMenuItem(menu, Icons.APP, I18N.get("MENU_ABOUT", "About {0}...", new String[] {
-            "deltaplayer"
-        }), ((SelectionListener) (CommandFactory.getAboutCommand())));
-        addMenuItem(menu, ((Image) (null)), I18N.get("MENU_SETTINGS", "Settings..."), ((SelectionListener) (CommandFactory.getSettingsCommand())));
-        addMenuSeparator(menu);
-        addCheckBoxMenuItem(menu, I18N.get("MENU_SELECT_FLAT", "Select (including all its directories)"), selectFlat, ((SelectionListener) (new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                Directory directory = GuiUtils.getDirectory(item);
-                Controller.getController().selectDirectory(directory, !selectFlat, true, true);
-            }
-        })));
-        addMenuItem(menu, Icons.REFRESH, I18N.get("MENU_REFRESH", "Refresh"), ((SelectionListener) (CommandFactory.getRefreshCommand())));
-        addMenuSeparator(menu);
-        addMenuItem(menu, Icons.EXIT, I18N.get("MENU_EXIT", "Exit"), ((SelectionListener) (CommandFactory.getExitCommand())));
-        return menu;
-    }
-
-    private static MenuItem addCheckBoxMenuItem(Menu menu, String text, boolean checked, SelectionListener l) {
+    static MenuItem addCheckBoxMenuItem(Menu menu, String text, boolean checked, SelectionListener l) {
         if(menu == null) {
             throw new AssertionError();
         } else {
@@ -119,7 +98,7 @@ class MenuFactory {
         }
     }
 
-    private static MenuItem addMenuItem(Menu menu, Image icon, String text, SelectionListener command) {
+    static MenuItem addMenuItem(Menu menu, Image icon, String text, SelectionListener command) {
         if(menu == null)
             throw new AssertionError();
         if(command == null) {
@@ -133,7 +112,7 @@ class MenuFactory {
         }
     }
 
-    private static void addMenuSeparator(Menu menu) {
+    static void addMenuSeparator(Menu menu) {
         new MenuItem(menu, 2);
     }
 

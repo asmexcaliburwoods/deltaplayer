@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 
 import dplayer.About;
 import dplayer.LogAppender;
+import dplayer.OSUtil;
 import dplayer.ext.win.WinExt;
 import dplayer.gui.i18n.I18N;
 import dplayer.gui.icons.Icons;
@@ -96,7 +97,7 @@ public class AboutDialog {
     private AboutDialog(Display display, boolean splash) {
         mShell = new Shell(display, 0x10008);
         mShell.setText(splash ? getSplashTitle() : I18N.get("ABOUT_TITLE", "{0} - About", new String[] {
-            "deltaplayer"
+            About.TITLE_SHORT
         }));
         mShell.setImage(Icons.APP);
         mShell.setLayout(((org.eclipse.swt.widgets.Layout) (new GridLayout())));
@@ -118,17 +119,22 @@ public class AboutDialog {
         topImageLabel.setImage(Icons.APP);
         topImageLabel.addMouseListener(((org.eclipse.swt.events.MouseListener) (closeCommand)));
         Link topTextLabel = new Link(top, 0);
-        topTextLabel.setText("deltaplayer 0.2 - a music player\n\n" +
+        topTextLabel.setText(About.TITLE+"\n\n" +
         		About.COPYRIGHT_LINE1+"\n"+About.COPYRIGHT_LINE2+"\n"+
 				"<a>"+About.HOMEPAGE+"</a>"
 				);
         topTextLabel.addListener(13, new Listener() {
             public void handleEvent(Event event) {
                 try {
-                    if(About.OS.startsWith("Win")) {
+                    if(OSUtil.isWindows()) {
                         WinExt winExt = WinExt.getWinExt();
                         winExt.launchDefaultBrowser(About.HOMEPAGE);
                     }
+//                    else if OSUtil.isLinux(){
+//                    	//TODO
+//                    }else {
+//                    	//TODO
+//                    }
                 }
                 catch(Exception e) {
                     ExceptionUtil.handleException(((Throwable) (e)));

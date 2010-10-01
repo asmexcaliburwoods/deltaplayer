@@ -5,34 +5,63 @@
 
 package dplayer.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.internal.win32.OS;
+import org.eclipse.swt.internal.win32.RECT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import dplayer.OSUtil;
 import dplayer.Settings;
 import dplayer.SettingsAdapter;
 import dplayer.gui.i18n.I18N;
-import dplayer.model.*;
+import dplayer.gui.icons.Icons;
+import dplayer.model.Directory;
+import dplayer.model.Location;
+import dplayer.model.Player;
+import dplayer.model.PlayerEventAdapter;
+import dplayer.model.Song;
+import dplayer.model.SongExt;
 import dplayer.model.cache.CacheManager;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import org.apache.log4j.Logger;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.internal.win32.OS;
-import org.eclipse.swt.internal.win32.RECT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.*;
 
 // Referenced classes of package dplayer.gui:
 //            Controller, GuiUtils, MainShell, ExceptionUtil, 
 //            MenuFactory, CommandFactory
 
-class MainArea {
+public class MainArea {
     protected class CollapseDirectoryCommand
         implements Listener {
 
@@ -90,22 +119,22 @@ class MainArea {
                 if(nl)
                     sb.append('\n');
             }
-            if(CacheManager.isEnabled()) {
-                DateFormat df = SimpleDateFormat.getDateInstance(3);
-                Date date = SongExt.getInsertDate(song);
-                sb.append(I18N.get("STATS_INSERTED", "Inserted: {0}", new String[] {
-                    date != null ? df.format(date) : ""
-                })).append('\n');
-                Date lastPlayed = SongExt.getLastPlayed(song);
-                sb.append(I18N.get("STATS_LAST_PLAYED", "Last played: {0}", lastPlayed == null ? (new String[] {
-                    I18N.get("STATS_NEVER_PLAYED", "never")
-                }) : (new String[] {
-                    df.format(lastPlayed)
-                }))).append('\n');
-                sb.append(I18N.get("STATS_PLAY_COUNTER", "Play counter: {0} times", new String[] {
-                    Integer.toString(SongExt.getPlayCounter(song))
-                })).append('\n');
-            }
+//            if(CacheManager.isEnabled()) {
+//                DateFormat df = SimpleDateFormat.getDateInstance(3);
+//                Date date = SongExt.getInsertDate(song);
+//                sb.append(I18N.get("STATS_INSERTED", "Inserted: {0}", new String[] {
+//                    date != null ? df.format(date) : ""
+//                })).append('\n');
+//                Date lastPlayed = SongExt.getLastPlayed(song);
+//                sb.append(I18N.get("STATS_LAST_PLAYED", "Last played: {0}", lastPlayed == null ? (new String[] {
+//                    I18N.get("STATS_NEVER_PLAYED", "never")
+//                }) : (new String[] {
+//                    df.format(lastPlayed)
+//                }))).append('\n');
+//                sb.append(I18N.get("STATS_PLAY_COUNTER", "Play counter: {0} times", new String[] {
+//                    Integer.toString(SongExt.getPlayCounter(song))
+//                })).append('\n');
+//            }
             if(sb.length() > 0)
                 mTable.setToolTipText(sb.substring(0, sb.length() - 1));
             else
@@ -202,7 +231,7 @@ class MainArea {
                 throw new AssertionError();
             mSelectedDirectory = directory;
             mSongList = songList;
-            MainArea.refreshTable();
+            refreshTable();
             if(songList.size() > 0)
                 mTable.select(0);
         }
@@ -216,7 +245,7 @@ class MainArea {
                             return;
                         try {
                             mSongList.add(s);
-                            MainArea.addSongToTable(s, pr.selectFirstSong);
+                            addSongToTable(s, pr.selectFirstSong);
                             File f = s.getFile();
                             long lastScanned = SongExt.getLastScanned(s);
                             if(lastScanned == f.lastModified()) {
@@ -272,7 +301,7 @@ class MainArea {
                     Controller.getController().updateToolbarSlider();
                     TableItem item = findTableItem(song);
                     if(item != null)
-                        MainArea.updateTableItem(item, song);
+                        updateTableItem(item, song);
                 }
             });
         }
@@ -281,8 +310,7 @@ class MainArea {
             if(song == null) {
                 throw new AssertionError();
             } else {
-                MainArea.refreshTable();
-                return;
+                refreshTable();
             }
         }
 
@@ -302,6 +330,7 @@ class MainArea {
         if(shell == null) {
             throw new AssertionError();
         } else {
+        	instance=this;
             final SashForm sash = new SashForm(((org.eclipse.swt.widgets.Composite) (shell)), 0x10900);
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
@@ -315,17 +344,35 @@ class MainArea {
                 public void mouseUp(MouseEvent event) {
                     Point loc = new Point(event.x, event.y);
                     TreeItem item = mTree.getItem(loc);
-                    if(item != null)
+                    if(item != null){
+                        final Directory d = GuiUtils.getDirectory(item);
                         if(event.button == 1) {
-                            Directory d = GuiUtils.getDirectory(item);
                             if(d != null) {
                                 mSelectedDirectory = d;
                                 Controller.getController().selectDirectoryConditional(d, true, true);
                             }
                         } else {
-                            Directory d = GuiUtils.getDirectory(item);
                             if(d != null) {
-                                Menu m = MenuFactory.getLocationTreePopupMenu(mTree, item);
+                                final boolean selectFlat = d.isDefaultSelectFlat();
+                                Menu menu = new Menu(mTree);
+                                MenuFactory.addMenuItem(menu, Icons.APP, I18N.get("MENU_ABOUT", "About {0}...", new String[] {
+                                    "deltaplayer"
+                                }), ((SelectionListener) (CommandFactory.getAboutCommand())));
+                                MenuFactory.addMenuItem(menu, ((Image) (null)), I18N.get("MENU_SETTINGS", "Settings..."), ((SelectionListener) (CommandFactory.getSettingsCommand())));
+                                MenuFactory.addMenuSeparator(menu);
+                                MenuFactory.addCheckBoxMenuItem(menu, I18N.get("MENU_SELECT_FLAT", "Select (including all its directories)"), selectFlat, ((SelectionListener) (new SelectionAdapter() {
+                                    public void widgetSelected(SelectionEvent e) {
+                                    	try{
+                                    		Controller.getController().selectDirectory(d, !selectFlat, true, true);
+                                    	}catch(Throwable tr){
+                                    		ExceptionUtil.handleException(tr);
+                                    	}
+                                    }
+                                })));
+                                MenuFactory.addMenuItem(menu, Icons.REFRESH, I18N.get("MENU_REFRESH", "Refresh"), ((SelectionListener) (CommandFactory.getRefreshCommand())));
+                                MenuFactory.addMenuSeparator(menu);
+                                MenuFactory.addMenuItem(menu, Icons.EXIT, I18N.get("MENU_EXIT", "Exit"), ((SelectionListener) (CommandFactory.getExitCommand())));
+                                Menu m = menu;
                                 if(OSUtil.isWindows()){
                                 	RECT rect = new RECT();
                                 	OS.GetWindowRect(mTree.handle, rect);
@@ -334,6 +381,7 @@ class MainArea {
                                 m.setVisible(true);
                             }
                         }
+                    }
                 }
             })));
             mTree.addListener(17, ((Listener) (new ExpandDirectoryCommand())));
@@ -349,26 +397,36 @@ class MainArea {
             mTable.addMouseMoveListener(((MouseMoveListener) (new MouseOverCommand())));
             mTable.addMouseListener(((org.eclipse.swt.events.MouseListener) (new MouseAdapter() {
                 public void mouseUp(MouseEvent event) {
-                    Point loc = new Point(event.x, event.y);
-                    TableItem item = mTable.getItem(loc);
-                    if(item != null) {
-                        Song s = GuiUtils.getSong(item);
-                        if(event.button == 1) {
-                            Controller.getController().selectSong(s);
-                        } else {
-                            Menu m = MenuFactory.getSongTablePopupMenu(mTable, s);
-                            RECT rect = new RECT();
-                            OS.GetWindowRect(mTable.handle, rect);
-                            m.setLocation(rect.left + loc.x, rect.top + loc.y);
-                            m.setVisible(true);
-                        }
-                    }
+                	try{
+	                    Point loc = new Point(event.x, event.y);
+	                    TableItem item = mTable.getItem(loc);
+	                    if(item != null) {
+	                        Song s = GuiUtils.getSong(item);
+	                        if(event.button == 1) {
+	                            Controller.getController().selectSong(s);
+	                        } else {
+	                            Menu m = MenuFactory.getSongTablePopupMenu(mTable, s);
+	                            if(OSUtil.isWindows()){
+	                            	RECT rect = new RECT();
+	                            	OS.GetWindowRect(mTable.handle, rect);
+	                            	m.setLocation(rect.left + loc.x, rect.top + loc.y);
+	                            }
+	                            m.setVisible(true);
+	                        }
+	                    }
+                	}catch(Throwable tr){
+                		ExceptionUtil.handleException(tr);
+                	}
                 }
 
                 public void mouseDoubleClick(MouseEvent event) {
-                    TableItem item = mTable.getItem(new Point(event.x, event.y));
-                    if(item != null)
-                        CommandFactory.getTreeSelectCommand().widgetSelected(((org.eclipse.swt.events.SelectionEvent) (null)));
+                	try{
+                		TableItem item = mTable.getItem(new Point(event.x, event.y));
+                		if(item != null)
+                			CommandFactory.getTreeSelectCommand().widgetSelected(((org.eclipse.swt.events.SelectionEvent) (null)));
+                	}catch(Throwable tr){
+                		ExceptionUtil.handleException(tr);
+                	}
                 }
             })));
             mTable.addPaintListener(((PaintListener) (new PaintCoverCommand())));
@@ -430,24 +488,21 @@ class MainArea {
         return null;
     }
 
-    static void refreshTable() {
-        if(sInstance == null)
-            throw new AssertionError();
-        int selected = sInstance.mTable.getSelectionIndex();
+    void refreshTable() {
+        int selected = mTable.getSelectionIndex();
         boolean displaySkipped = Settings.getBoolean(Settings.DISPLAY_SKIPPED);
-        sInstance.mTable.removeAll();
+        mTable.removeAll();
         Song s;
-        for(Iterator<Song> iterator = sInstance.mSongList.iterator(); iterator.hasNext(); addSongToTable(displaySkipped, s, false))
+        for(Iterator<Song> iterator = mSongList.iterator(); iterator.hasNext(); addSongToTable(displaySkipped, s, false))
             s = iterator.next();
-
-        sInstance.mTable.setSelection(selected);
+        mTable.setSelection(selected);
     }
 
-    private static void addSongToTable(Song s, boolean selectFirstSong) {
+    private void addSongToTable(Song s, boolean selectFirstSong) {
         addSongToTable(Settings.getBoolean(Settings.DISPLAY_SKIPPED), s, selectFirstSong);
     }
 
-    private static void addSongToTable(boolean displaySkipped, Song s, boolean selectFirstSong) {
+    private void addSongToTable(boolean displaySkipped, Song s, boolean selectFirstSong) {
         if(SongExt.isSkip(s) && !displaySkipped)
             return;
         Table table = sInstance.mTable;
@@ -459,13 +514,42 @@ class MainArea {
         if(selectFirstSong && table.getSelectionIndex() < 0)
             Controller.getController().selectSong(s);
     }
+    
+    private String baseFolderCanonicalPath="";
+    private final String FILE_SEPARATOR=System.getProperty("file.separator");
+    public synchronized void setBaseFolder(File f){
+    	String p=getCanonicalPath(f);
+    	if(!p.endsWith(FILE_SEPARATOR))p=p+FILE_SEPARATOR;
+    	baseFolderCanonicalPath=p;
+    }
+    
+    private static String getCanonicalPath(File f){
+    	try{
+    		return f.getCanonicalPath(); 
+    	}catch(IOException e){
+    		return f.getAbsolutePath();
+    	}
+    }
 
-    private static void updateTableItem(TableItem ti, Song s) {
+    private void updateTableItem(TableItem ti, Song s) {
         long duration = s.getDurationSeconds();
+        String text="";
+        File sf=s.getFile();
+        String baseFolderCanonicalPath=this.baseFolderCanonicalPath;
+        if(baseFolderCanonicalPath==null)throw new AssertionError();
+        text=getCanonicalPath(sf);
+        logger.info("0: "+baseFolderCanonicalPath+"::"+text);
+        if(text.startsWith(baseFolderCanonicalPath))text=text.substring(baseFolderCanonicalPath.length());
         String durationString = duration >= 0L ? GuiUtils.formatTimeSeconds(duration) : "";
         ti.setText(new String[] {
-            s.getFilename(), durationString
+            text, durationString
         });
+    }
+    
+    private static MainArea instance;
+    
+    public static MainArea getInstance(){
+    	return instance;
     }
 
     protected void addDirectory(TreeItem node, Directory directory) {
