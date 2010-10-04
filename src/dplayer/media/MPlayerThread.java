@@ -6,6 +6,8 @@
 package dplayer.media;
 
 import dplayer.SettingsAdapter;
+import dplayer.gui.ExceptionUtil;
+
 import java.io.*;
 import java.util.*;
 import org.apache.log4j.Logger;
@@ -20,19 +22,25 @@ class MPlayerThread extends Thread {
 
         public void run() {
             try {
-                BufferedReader br = new BufferedReader(((java.io.Reader) (new InputStreamReader(mInputStream))));
+                BufferedReader br = new BufferedReader(new InputStreamReader(mInputStream));
                 String line;
                 while((line = br.readLine()) != null)  {
-                    MPlayerThread.logger.debug(((Object) ((new StringBuilder(String.valueOf(((Object) (mName))))).append("> ").append(line).toString())));
-                    if(line.startsWith("File not found: "))
-                        player.fireExceptionEvent(((Throwable) (new FileNotFoundException(player.getFile().getPath()))));
-                    else
+                    if(logger.isDebugEnabled())
+                    	logger.debug(((Object) ((new StringBuilder(String.valueOf(((Object) (mName))))).append("> ").append(line).toString())));
+                    if(line.startsWith("File not found: ")){
+                    	line=line.substring("File not found: ".length());
+                        player.fireExceptionEvent(new FileNotFoundException(line));
+                    }else
                     if(line.startsWith("Exiting... (End of file)"))
                         player.fireTrackFinished();
                 }
             }
             catch(Throwable e) {
-                MPlayerThread.logger.error("", e);
+            	if(e instanceof IOException&&"Stream closed".equals(e.getMessage())){
+            		logger.info("Stream closed");
+            	}
+            	else
+            		ExceptionUtil.handleException(e);
             }
         }
 
@@ -46,7 +54,6 @@ class MPlayerThread extends Thread {
             } else {
                 mName = name;
                 mInputStream = is;
-                return;
             }
         }
     }
