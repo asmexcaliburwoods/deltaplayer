@@ -45,10 +45,10 @@ public class Launcher {
     }
 
     private static boolean isRunning() throws ExtException {
-        if(About.OS.equals("Linux"))
+        if(OSUtil.isLinux())
             return LinuxExt.isRunning();
         try {
-            if(About.OS.startsWith("Windows"))
+            if(OSUtil.isWindows())
                 return WinExt.isRunning();
         }
         catch(ExtException extexception) { }
@@ -76,13 +76,11 @@ public class Launcher {
             AboutDialog.setProgress(100, I18N.get("INIT_OPENING", "Opening..."));
             shell.open();
             MainShell.getShell().addDisposeListener(new DisposeListener() {
-
                 public void widgetDisposed(DisposeEvent e) {
                     Launcher.close();
                 }
             });
             display.addListener(21, new Listener() {
-
                 public void handleEvent(Event event) {
                     Launcher.close();
                 }
@@ -92,10 +90,10 @@ public class Launcher {
                 if(!display.readAndDispatch())
                     display.sleep();
             display.dispose();
-            saveOk();
         }catch(Throwable e) {
-            logger.error("", e);
-            saveErr(e);
+            ExceptionUtil.handleException(e);
+        }finally{
+        	close();
         }
     }
 
@@ -113,32 +111,19 @@ public class Launcher {
 	            Controller.getController().deinit();
 	            saveOk();
 	        }catch(Throwable e) {
-	            saveErr(e);
+	            ExceptionUtil.handleException(e);
 	        }
 	    }
     }
 
     private static void saveOk() throws FileNotFoundException {
         try {
-            PrintStream ps = new PrintStream(((java.io.OutputStream) (new FileOutputStream("ok.log"))));
+            PrintStream ps = new PrintStream(((java.io.OutputStream) (new FileOutputStream("ok.log"))));//TODO move to logs system. 
             ps.println("ok");
             ps.close();
         }
         catch(Exception e) {
-            e.printStackTrace();
+            ExceptionUtil.handleException(e);
         }
     }
-
-    private static void saveErr(Throwable e) {
-        try {
-            PrintStream ps = new PrintStream(((java.io.OutputStream) (new FileOutputStream("err.log"))));
-            e.printStackTrace(ps);
-            ps.close();
-        }
-        catch(Exception e1) {
-            e1.printStackTrace();
-        }
-    }
-
-
 }

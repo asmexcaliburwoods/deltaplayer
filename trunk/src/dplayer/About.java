@@ -1,12 +1,15 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst splitstr(100,nl) nonlb safe 
-// Source File Name:   About.java
+/*
+Deltaplayer.
+© Copyright 2007-2008 Tobias Winterhalter
+© Copyright 2008-2010 Evgeniy Philippov
+*/
 
 package dplayer;
 
 import java.io.*;
 import java.util.Properties;
+
+import dplayer.gui.ExceptionUtil;
 
 public class About {
 
@@ -27,9 +30,9 @@ public class About {
     public static final String TITLE_SHORT = "deltaplayer";
     public static final String VERSION;
     public static final String TITLE = "deltaplayer v."+VERSION+" - a music player";
-    public static final String COPYRIGHT_LINE1 = "(c) Copyright 2007-2008 Tobias Winterhalter";
-    public static final String COPYRIGHT_LINE2 = "(c) Copyright 2008-2010 Evgenii Philippov";
-    public static final String HOMEPAGE = "http://sourceforge.net/projects/deltaplayer/files/";
+    public static final String COPYRIGHT_LINE1 = "© Copyright 2007-2008 Tobias Winterhalter";
+    public static final String COPYRIGHT_LINE2 = "© Copyright 2008-2010 Evgeniy Philippov";
+    public static final String HOMEPAGE = "http://code.google.com/p/deltaplayer/";
     public static final String ABOUT = loadText("/dplayer/ABOUT");
     public static final String LICENSE = loadText("/dplayer/LICENSE");
     public static final String LICENSE_SHORT = loadText("/dplayer/LICENSE_SHORT");
@@ -58,7 +61,7 @@ public class About {
                 try {
                     in.close();
                 }catch(IOException ioexception){
-                	ioexception.printStackTrace();
+                	ExceptionUtil.handleException(ioexception);
                 }
         }
         return result.toString();

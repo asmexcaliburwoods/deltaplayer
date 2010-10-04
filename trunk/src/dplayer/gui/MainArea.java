@@ -538,7 +538,6 @@ public class MainArea {
         String baseFolderCanonicalPath=this.baseFolderCanonicalPath;
         if(baseFolderCanonicalPath==null)throw new AssertionError();
         text=getCanonicalPath(sf);
-        logger.info("0: "+baseFolderCanonicalPath+"::"+text);
         if(text.startsWith(baseFolderCanonicalPath))text=text.substring(baseFolderCanonicalPath.length());
         String durationString = duration >= 0L ? GuiUtils.formatTimeSeconds(duration) : "";
         ti.setText(new String[] {

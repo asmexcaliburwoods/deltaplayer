@@ -51,22 +51,7 @@ class MainShell {
         protected boolean mRunTimer;
 
         public void exceptionEvent(final Throwable e) {
-            e.printStackTrace();
-            Display.getDefault().syncExec(new Runnable() {
-                public void run() {
-                    MessageBox messageBox = new MessageBox(mShell, 33);
-                    messageBox.setText((new StringBuilder("deltaplayer - ")).append(I18N.get("ERROR_TITLE", "error")).toString());
-                    if(e instanceof FileNotFoundException) {
-                        Controller.getController().stop(dplayer.model.Player.StopReason.OTHER_STOP_REASON);
-                        messageBox.setMessage(I18N.get("ERROR_FILE_NOT_FOUND", "Unable to open file {0}.", new String[] {
-                            e.getMessage()
-                        }));
-                    } else {
-                        messageBox.setMessage(e.getMessage() == null ? "" : e.getMessage());
-                    }
-                    messageBox.open();
-                }
-            });
+        	ExceptionUtil.handleException(e);
         }
 
         public void stateChangedEvent(dplayer.model.Player.State state) {
