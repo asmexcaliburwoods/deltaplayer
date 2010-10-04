@@ -246,7 +246,7 @@ class Controller {
     }
 
     private void selectSongByPath(File path, boolean recurse) {
-        if((path == null || path.length() <= 0L))
+        if(path == null)
             throw new AssertionError();
         if(mSelectedDirectory != null) {
             Song song = mSelectedDirectory.findSongByPath(path, recurse);

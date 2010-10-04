@@ -44,7 +44,7 @@ public class ExceptionUtil {
                 } else {
                     messageBox.setMessage(sw.toString());
                 }
-                if(messageBox.open()==SWT.ABORT){
+                if(messageBox.open()==SWT.ABORT){//TODO this doesn't work, need to create a special dialog. 
                 	log.info("Abort selected by the user, exiting");
                 	MainShell.getShell().dispose();
                 }
