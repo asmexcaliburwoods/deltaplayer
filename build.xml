@@ -113,12 +113,11 @@
 
 	<target name="clean-dist"
 		description="Cleanup distribution output directory.">
-		<delete>
+		<delete failonerror="false">
 			<fileset dir="${dist.dir}">
 				<include name="*.jar"/>
 				<include name="*.zip"/>
 				<include name="*.exe"/>
-				<include name="*.dll"/>
 			</fileset>
 		</delete>
 	</target>
