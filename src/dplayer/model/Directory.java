@@ -443,8 +443,7 @@ public class Directory {
         }
 
         if(recurse) {
-            for(Iterator<Directory> iterator1 = mDirectoryList.iterator(); iterator1.hasNext();) {
-                Directory d = iterator1.next();
+            for(Directory d : mDirectoryList) {
                 Song s = d.findSongByPath(path, recurse);
                 if(s != null)
                     return s;
