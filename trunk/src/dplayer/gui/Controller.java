@@ -5,6 +5,9 @@
 
 package dplayer.gui;
 
+//TODO make tray icon work like I like on tray icon mouse clicks. 
+//TODO why in Gnome under Ubuntu 9.04 tray icon tip not appears??? should appear. 
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
