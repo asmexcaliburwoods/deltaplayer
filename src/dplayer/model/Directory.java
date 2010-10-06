@@ -437,12 +437,9 @@ public class Directory {
     }
 
     public synchronized Song findSongByPath(File path, boolean recurse) {
-        if((path == null || path.length() <= 0))
-            throw new AssertionError();
-        for(Iterator<Song> iterator = mSongList.iterator(); iterator.hasNext();) {
-            Song song = iterator.next();
-            if(song.getFile().equals(((Object) (path))))
-                return song;
+        if(path==null)return null;
+        for(Song song : mSongList){
+            if(song.getFile().equals(path))return song;
         }
 
         if(recurse) {
