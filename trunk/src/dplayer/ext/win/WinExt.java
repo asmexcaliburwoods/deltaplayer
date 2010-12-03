@@ -5,11 +5,11 @@
 
 package dplayer.ext.win;
 
-import dplayer.ext.ExtException;
-import dplayer.gui.AboutDialog;
-import dplayer.gui.i18n.I18N;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Shell;
+
+import dplayer.ext.ExtException;
+import dplayer.gui.AboutDialog;
 
 public class WinExt {
 

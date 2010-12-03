@@ -7,8 +7,6 @@ package dplayer.gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,7 +53,6 @@ import dplayer.model.Player;
 import dplayer.model.PlayerEventAdapter;
 import dplayer.model.Song;
 import dplayer.model.SongExt;
-import dplayer.model.cache.CacheManager;
 
 // Referenced classes of package dplayer.gui:
 //            Controller, GuiUtils, MainShell, ExceptionUtil, 
