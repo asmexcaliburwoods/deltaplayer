@@ -44,7 +44,7 @@ public class LinuxExt {
         public void run() {
             try {
                 BufferedReader br = new BufferedReader(((java.io.Reader) (new InputStreamReader(mInputStream))));
-                for(String line = null; (line = br.readLine()) != null;) {
+                for(String line = null; (line = br.readLine()) != null;) {//TODO optimize using available()
                     mBuffer.append(line);
                     mBuffer.append('\n');
                 }

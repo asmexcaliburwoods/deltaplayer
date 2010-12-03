@@ -5,20 +5,34 @@
 
 package dplayer.model;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.apache.log4j.Logger;
+
 import dplayer.DPUtils;
 import dplayer.gui.ExceptionUtil;
-import dplayer.gui.MainArea;
 import dplayer.model.cache.CacheManager;
 import dplayer.model.cache.DirectoryManager;
 import dplayer.model.cache.SongManager;
-import entagged.audioformats.*;
+import entagged.audioformats.AudioFile;
+import entagged.audioformats.AudioFileFilter;
+import entagged.audioformats.AudioFileIO;
+import entagged.audioformats.Tag;
 import entagged.audioformats.exceptions.CannotReadException;
 import entagged.audioformats.generic.Utils;
-import java.io.File;
-import java.io.FileFilter;
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
-import org.apache.log4j.Logger;
 
 // Referenced classes of package dplayer.model:
 //            DirectorySettings, Song, Player, SongExt, 

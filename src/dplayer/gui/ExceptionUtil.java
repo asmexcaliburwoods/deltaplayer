@@ -5,9 +5,9 @@
 
 package dplayer.gui;
 
-import java.io.ByteArrayOutputStream;
+//TODO Copy path on songs and dirs.
+
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
