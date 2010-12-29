@@ -39,8 +39,7 @@ class MPlayerThread extends Thread {
             	if(e instanceof IOException&&"Stream closed".equals(e.getMessage())){
             		logger.info("Stream closed");
             	}
-            	else
-            		ExceptionUtil.handleException(e);
+            	else logger.error("", e);
             }
         }
 
