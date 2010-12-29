@@ -20,7 +20,7 @@
 <project name="deltaplayer" basedir=".">
 
 	<!-- NOTE: To build the launch script for Linux, an installation of launch4l's fork by eph is required.
-			   Take http://launch4l-delta.googlecode.com/files/launch4l-delta-bin-2010.02delta.zip , and uncomress to some dir.
+			   Take http://launch4l-delta.googlecode.com/files/launch4l-delta-bin-2010.12.29delta.zip, and uncompress to some dir.
 	           Set the property "launch4l.dir" to the name of this dir. -->
 	
 	<!-- NOTE: To build the launch executable for win32, an installation of launch4j (min. version 3, for example 3.0.1) 
@@ -43,8 +43,8 @@
 	<!-- NOTE: set the test-dist-linux.dir property below to run test*linux* targets -->
 	<!-- NOTE: set the test-dist-win32.dir property below to run test*win32* targets -->
 	
-	<property name="test-dist-linux.dir" value="/home/keep/bin/deltaplayer-test-dir/"/>
-	<property name="launch4l.dir" value="/home/keep/java/launch4l/"/>
+	<property name="test-dist-linux.dir" value="/home/keep/wd1/home-keep/bin/deltaplayer-test-dir/"/>
+	<property name="launch4l.dir" value="/home/keep/wd1/home-keep/java/launch4l/"/>
 
 	<property name="test-dist-win32.dir" value="f:/bin/deltaplayer-test-dir/"/>
 	<property name="mingw.home" value="C:/MinGW"/>

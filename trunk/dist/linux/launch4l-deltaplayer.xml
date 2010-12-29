@@ -18,15 +18,15 @@
     <opt>-client</opt>
   </jre>
   <versionInfo>
-    <fileVersion>10.0.0.1</fileVersion>
+    <fileVersion>10.0.0.2</fileVersion>
     <txtFileVersion>2010_SEPTEMBER_0001</txtFileVersion>
     <fileDescription>deltaplayer</fileDescription>
     <copyright>Copyright (C) 2007 Tobias Winterhalter, Copyright (C) 2008-2010 Evgeniy Philippov</copyright>
-    <productVersion>10.0.0.1</productVersion>
-    <txtProductVersion>2010_SEPTEMBER_0001</txtProductVersion>
+    <productVersion>10.0.0.2</productVersion>
+    <txtProductVersion>2010_DEC_29__0001</txtProductVersion>
     <productName>deltaplayer</productName>
     <companyName></companyName>
     <internalName></internalName>
-    <originalFilename>deltaplayer.exe</originalFilename>
+    <originalFilename>deltaplayer</originalFilename>
   </versionInfo>
 </launch4lConfig>

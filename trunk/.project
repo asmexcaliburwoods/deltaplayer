@@ -3,6 +3,7 @@
 	<name>deltaplayer-trunk-gcode</name>
 	<comment></comment>
 	<projects>
+		<project>launch4l-delta-trunk</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
