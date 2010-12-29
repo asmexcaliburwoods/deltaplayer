@@ -1,0 +1,258 @@
+<!--
+ Copyright (C) 2007 Tobias Winterhalter
+ Copyright (C) 2008-2010 Evgeniy Philippov
+ 
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+	
+-->
+<project name="deltaplayer" basedir=".">
+
+	<!-- NOTE: To build the launch script for Linux, an installation of launch4l's fork by eph is required.
+			   Take http://launch4l-delta.googlecode.com/files/launch4l-delta-bin-2010.12.29delta.zip, and uncompress to some dir.
+	           Set the property "launch4l.dir" to the name of this dir. -->
+	
+	<!-- NOTE: To build the launch executable for win32, an installation of launch4j (min. version 3, for example 3.0.1) 
+			   is required (http://launch4j.sourceforge.net).
+	           Set the property "launch4j.dir" to the installation directory of launch4j. -->
+
+	<!-- NOTE: To build the Win32Ext library deltaplayer.dll, an installation of MinGW is required (http://www.mingw.org).
+		       Min. required MinGW packages: base (gcc), g++ and mingw32-make. The MinGW binaries have to be within
+		       your PATH environment. Set the property "mingw.home" to the MinGW installation directory and set the
+		       property "jdk.home" to the location of an installed JDK. The latter is required to find the JNI header files. -->
+	
+	<!-- NOTE: To build the installer for win32, an installation of NSIS is required (http://nsis.sourceforge.net).
+	           Set the property "nsis.home" to the installation directory of NSIS. -->
+	
+	<!-- NOTE: For Eclipse to process the aspects properly, the AJDT plugin
+			   (http://www.eclipse.org/aspectj/) is required and the project
+			   has to be declared as AspectJ project.
+	-->
+
+	<!-- NOTE: set the test-dist-linux.dir property below to run test*linux* targets -->
+	<!-- NOTE: set the test-dist-win32.dir property below to run test*win32* targets -->
+	
+	<property name="test-dist-linux.dir" value="/home/keep/wd1/home-keep/bin/deltaplayer-test-dir/"/>
+	<property name="launch4l.dir" value="/home/keep/wd1/home-keep/java/launch4l/"/>
+
+	<property name="test-dist-win32.dir" value="f:/bin/deltaplayer-test-dir/"/>
+	<property name="mingw.home" value="C:/MinGW"/>
+	<property name="jdk.home" value="C:/java/jdk1.6.0u13"/>
+	<property name="launch4j.dir" value="f:/java/launch4j/"/>
+	<property name="nsis.home" value="f:/devel/NSIS_win32/"/>
+	
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="dist.dir" value="dist"/>
+	
+	<!-- Choose a bin folder different from the one used by Eclipse. -->
+	<property name="bin.dir" value="${dist.dir}/bin"/>
+
+	<!-- Load release information. -->
+	<property file="${src.dir}/dplayer/release.properties"/>
+
+	<target name="all" depends="zip-linux, zip-win32, installer-win32, zip-src"
+		description="Create distribution files for all target platforms + src zipball."/>	
+	
+	<target name="clean-bin"
+		description="Cleanup binary output directory.">
+		<delete failonerror="false">
+			<fileset dir="${bin.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="compile" depends="clean-bin"
+		description="Compile all sources.">
+		<mkdir dir="${bin.dir}"/>
+		<javac srcdir="${src.dir}" debug="yes" destdir="${bin.dir}" target="1.5">
+			<classpath>
+				<pathelement location="${lib.dir}/ascrblr-classes-v1dplayer.zip"/>
+				<pathelement location="${lib.dir}/db4o.jar"/>
+				<pathelement location="${lib.dir}/entagged-audioformats-classes-v0.31dplayer1.zip"/>
+				<pathelement location="${lib.dir}/junit-4.4.jar"/>
+				<pathelement location="${lib.dir}/log4j.jar"/>
+				<pathelement location="${lib.dir}/swt-win32.jar"/>
+			</classpath>
+			<include name="**/*"/>
+		</javac>
+		<copy todir="${bin.dir}/dplayer">
+			<fileset dir="${src.dir}/dplayer">
+				<include name="ABOUT"/>
+				<include name="CREDITS"/>
+	 			<include name="LICENSE"/>
+				<include name="LICENSE_SHORT"/>
+				<include name="TODO"/>
+				<include name="release.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="${bin.dir}/dplayer/gui/i18n">
+			<fileset dir="${src.dir}/dplayer/gui/i18n">
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="${bin.dir}/dplayer/gui/icons">
+			<fileset dir="${src.dir}/dplayer/gui/icons">
+				<include name="*.png"/>
+				<include name="*.ico"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean-dist"
+		description="Cleanup distribution output directory.">
+		<delete failonerror="false">
+			<fileset dir="${dist.dir}">
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+				<include name="*.exe"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="jar" depends="clean-dist, compile"
+		description="Create jar archive with all classes and misc files.">
+		<jar destfile="${dist.dir}/deltaplayer.jar">
+			<manifest>
+				<attribute name="Main-Class" value="dplayer.gui.Launcher"/>
+				<attribute name="Class-Path" value="lib/log4j.jar lib/swt.jar lib/entagged-audioformats-classes-v0.31dplayer1.zip lib/db4o.jar lib/ascrblr-classes-v1dplayer.zip"/>
+			</manifest>
+			<fileset dir="${bin.dir}">
+				<include name="dplayer/**"/>
+			</fileset>
+		</jar>
+	</target>
+			
+	<target name="exe-linux" depends="jar"
+		description="Create native shell script for Linux (launch4l is required).">
+		<taskdef name="launch4l" classname="de.wcondev.launch4l.ant.Launch4lTask"
+			classpath="${launch4l.dir}/launch4l.jar:${launch4l.dir}/xstream-1.2.2.jar"/>
+		<launch4l configFile="${dist.dir}/linux/launch4l-deltaplayer.xml" verbose="true"/>
+	</target>
+
+	<target name="zip-linux" depends="exe-linux"
+		description="Create zip distribution for Linux.">
+		<copy file="${lib.dir}/swt-linux.jar" tofile="${lib.dir}/swt.jar"/>
+		<zip destfile="${dist.dir}/deltaplayer-linux-bin-${app.version}.zip">
+			<fileset dir="${dist.dir}">
+				<include name="deltaplayer.sh"/>
+				<include name="README"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="${lib.dir}/*.so"/>
+				<include name="${lib.dir}/*.jar"/>
+				<include name="${lib.dir}/*.zip"/>
+				<exclude name="${lib.dir}/swt-win32.jar"/>
+				<exclude name="${lib.dir}/swt-linux.jar"/>
+				<exclude name="${lib.dir}/junit-4.4.jar"/>
+			</fileset>
+			<fileset dir="${src.dir}/dplayer">
+				<include name="ABOUT"/>
+				<include name="LICENSE"/>
+				<include name="CREDITS"/>
+			</fileset>
+		</zip>
+		<delete file="${lib.dir}/swt.jar"/>
+	</target>
+
+	<target name="exe-win32" depends="jar"
+		description="Create native executable for win32 (launch4j is required).">
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+			classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar"/>
+		<launch4j configFile="${dist.dir}/win32/launch4j-deltaplayer.xml"
+			fileVersion="${fileVersion}"
+			txtFileVersion="${app.version}"
+			productVersion="${fileVersion}"
+			txtProductVersion="${app.version}"/>
+	</target>
+	
+	<target name="WinExt"
+		description="Create WinExt library deltaplayer.dll (MinGW is required).">
+		<exec executable="${mingw.home}/bin/mingw32-make.exe" dir="${src.dir}/dplayer/ext/win">
+			<env key="JAVA_HOME" value="${jdk.home}"/>
+			<env key="MINGW_HOME" value="${mingw.home}"/>
+			<env key="PATH" value="${mingw.home}/bin"/>
+		</exec>
+		<delete verbose="true" failonerror="false">
+			<fileset dir="${src.dir}/dplayer/ext/win">
+				<include name="*.o"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="zip-win32" depends="exe-win32, WinExt"
+		description="Create zip distribution for win32.">
+		<copy file="${lib.dir}/swt-win32.jar" tofile="${lib.dir}/swt.jar"/>
+		<zip destfile="${dist.dir}/deltaplayer-win32-bin-${app.version}.zip">
+			<fileset dir="${dist.dir}">
+				<include name="README"/>
+				<include name="deltaplayer.exe"/>
+				<include name="deltaplayer.dll"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="${lib.dir}/*.dll"/>
+				<include name="${lib.dir}/*.jar"/>
+				<include name="${lib.dir}/*.zip"/>
+				<exclude name="${lib.dir}/swt-win32.jar"/>
+				<exclude name="${lib.dir}/swt-linux.jar"/>
+			</fileset>
+			<fileset dir="${src.dir}/dplayer">
+				<include name="ABOUT"/>
+				<include name="LICENSE"/>
+				<include name="CREDITS"/>
+			</fileset>
+		</zip>
+		<delete file="${lib.dir}/swt.jar"/>
+	</target>	
+	
+	<target name="installer-win32" depends="compile, exe-win32, WinExt"
+		description="Create the Win32 installer distribution.">
+		<exec executable="${nsis.home}/makensis.exe">
+		    <arg value="/DNSISDIR='${nsis.home}'"/>
+		    <arg value="/V4"/>
+		    <arg value="/DVERSION=${app.version}"/>
+			<arg value="${dist.dir}/win32/installer.nsi"/>
+		</exec>
+	</target>
+	
+	<target name="zip-src"
+		description="Create zip distribution of sources.">
+		<zip destfile="${dist.dir}/deltaplayer-src-${app.version}.zip">
+			<fileset dir=".">
+				<include name="build.xml"/>
+				<include name="${src.dir}/**"/>
+				<include name="${lib.dir}/**"/>
+				<include name="README"/>
+				<include name="${dist.dir}/win32/**"/>
+				<include name="${dist.dir}/linux/**"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<!-- This target can be used to create a test installation of deltaplayer. The destination directory has
+		 to be specified with the property "test-dist-win32.dir". -->
+	<target name="test-dist-win32" description="Unpack zip distribution for win32 to a directory."
+			depends="zip-win32">
+		<unzip src="${dist.dir}/deltaplayer-win32-bin-${app.version}.zip" dest="${test-dist-win32.dir}" overwrite="true"/>
+	</target>
+
+	<!-- This target can be used to create a test installation of deltaplayer. The destination directory has
+		 to be specified with the property "test-dist-linux.dir". -->
+	<target name="test-dist-linux"
+		description="Unpack zip distribution for Linux to a directory." depends="zip-linux">
+		<unzip src="${dist.dir}/deltaplayer-linux-bin-${app.version}.zip" dest="${test-dist-linux.dir}" overwrite="true"/>
+		<!-- TODO chmod u+x ${test-dist-linux.dir}/deltaplayer.sh --> 
+	</target>
+</project>

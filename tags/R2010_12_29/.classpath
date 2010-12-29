@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/db4o.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/swt-linux.jar"/>
+	<classpathentry kind="lib" path="lib/ascrblr-classes-v1dplayer.zip"/>
+	<classpathentry kind="lib" path="lib/entagged-audioformats-classes-v0.31dplayer1.zip"/>
+	<classpathentry kind="lib" path="lib/swt-win32.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

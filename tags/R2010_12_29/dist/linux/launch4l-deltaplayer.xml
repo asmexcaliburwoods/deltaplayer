@@ -1,0 +1,32 @@
+<launch4lConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>../deltaplayer.jar</jar>
+  <outfile>../deltaplayer.sh</outfile>
+  <errTitle>deltaplayer.sh</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>https://sourceforge.net/projects/deltaplayer</supportUrl>
+  <stayAlive>false</stayAlive>
+  <var>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:lib</var>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <initialHeapSize>64</initialHeapSize>
+    <maxHeapSize>64</maxHeapSize>
+    <opt>-client</opt>
+  </jre>
+  <versionInfo>
+    <fileVersion>10.0.0.2</fileVersion>
+    <txtFileVersion>2010_SEPTEMBER_0001</txtFileVersion>
+    <fileDescription>deltaplayer</fileDescription>
+    <copyright>Copyright (C) 2007 Tobias Winterhalter, Copyright (C) 2008-2010 Evgeniy Philippov</copyright>
+    <productVersion>10.0.0.2</productVersion>
+    <txtProductVersion>2010_DEC_29__0001</txtProductVersion>
+    <productName>deltaplayer</productName>
+    <companyName></companyName>
+    <internalName></internalName>
+    <originalFilename>deltaplayer</originalFilename>
+  </versionInfo>
+</launch4lConfig>

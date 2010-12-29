@@ -1,0 +1,29 @@
+
+deltaplayer
+
+Copyright (C) 2007, 2008 Tobias Winterhalter, Evgenii Philippob
+
+deltaplayer is a simple music file player written in Java. Instead of using a sophisticated play list management or "my music" repository, it simply offers a file system browser to let you choose directories containing music files. This approach is very flexible and straight forward. No installation required and nothing is written to the file system (except a simple properties file).
+
+deltaplayer is strongly inspired by the '1by1' player of Martin Pesch (http://mpesch3.de1.cc/). The only reason to write an alternative to his player is the platform portability of Java. In other words: I wanted something like 1by1 on Linux.
+
+deltaplayer is just acting as front-end to command line music file players. Currently it uses 'mplayer' for music playback. Theoretically, deltaplayer can be used on all platforms supported by mplayer like Linux and Windows (these two are tested).
+
+deltaplayer comes with ABSOLUTELY NO WARRANTY; for details see 'LICENSE'. This is free software, and you are welcome to redistribute it under certain conditions; see 'LICENSE' for details.
+
+Homepage: https://sourceforge.net/projects/deltaplayer
+
+
+--------------------------------------------------------------------
+
+The mplayer project is hosted at http://www.mplayerhq.hu/
+Entagged Audio Tag library is hosted at http://entagged.sourceforge.net/
+The log4j project is hosted at http://jakarta.apache.org/log4j/
+The open source object database engine "db4o" is supplied by db4objects Inc. (http://www.db4objects.com)
+SWT is provided by the Eclipse Foundation (http://www.eclipse.org/)
+Icons are provided by the Tango Desktop Project (http://tango-project.org/)
+The Win executable is created by launch4j (http://launch4j.sourceforge.net/)
+The Linux launch script is created with launch4l (http://launch4l.wcondev.de/)
+
+Java is a registered trademark of Sun Microsystems, Inc.
+All other product names mentioned herein and throughout the entire documentation are trademarks of their respective owners.
